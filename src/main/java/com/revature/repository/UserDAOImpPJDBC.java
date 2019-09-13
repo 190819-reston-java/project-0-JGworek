@@ -20,7 +20,8 @@ public class UserDAOImpPJDBC implements UserDAO {
 				rsset.getString("username"),
 				rsset.getString("_password"),
 				rsset.getString("full_name"),
-				rsset.getDouble("balance"));
+				rsset.getDouble("balance"),
+				rsset.getBoolean("admin_status"));
 	}
 	
 	@Override
@@ -91,17 +92,19 @@ public class UserDAOImpPJDBC implements UserDAO {
 				ResultSet rsset = null;
 				
 				List<User> users = new ArrayList<User>();
-				String query = "SELECT * FROM accounts;";
+				String query = "SELECT * FROM jg_bank.accounts;";
 				
 				try {
 					conn = ConnectionUtil.getConnection();
 					stmt = conn.prepareStatement(query);
+					rsset = stmt.executeQuery();
 					while(rsset.next()) {
 						users.add(new User(rsset.getLong("id"),
 								rsset.getString("username"),
 								rsset.getString("_password"),
 								rsset.getString("full_name"),
-								rsset.getDouble("balance"))
+								rsset.getDouble("balance"),
+								rsset.getBoolean("admin_status"))
 								);
 					}
 				} catch (SQLException e) {
@@ -119,7 +122,7 @@ public class UserDAOImpPJDBC implements UserDAO {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		
-		String query = "INSERT INTO jg_bank.accounts VALUES (DEFAULT, ?, ?, ?, ?);";
+		String query = "INSERT INTO jg_bank.accounts VALUES (DEFAULT, ?, ?, ?, TRUNC(CAST(? AS NUMERIC), 2), ?);";
 	
 		try {
 			conn = ConnectionUtil.getConnection();
@@ -128,6 +131,7 @@ public class UserDAOImpPJDBC implements UserDAO {
 			stmt.setString(2, u.getPassword());
 			stmt.setString(3, u.getFullName());
 			stmt.setDouble(4, u.getBalance());
+			stmt.setBoolean(5, u.isAdminStatus());
 			stmt.execute();
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -144,7 +148,33 @@ public class UserDAOImpPJDBC implements UserDAO {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		
-		final String query = "UPDATE jg_bank.accounts SET username=?, _password=?, full_name=?, balance=? WHERE id = ?;";
+		final String query = "UPDATE jg_bank.accounts SET username=?, _password=?, full_name=?, balance=TRUNC(CAST(? AS NUMERIC), 2), admin_status=FALSE WHERE id = ?;";
+		
+		try {
+			conn = ConnectionUtil.getConnection();
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, u.getUsername());
+			stmt.setString(2, u.getPassword());
+			stmt.setString(3, u.getFullName());
+			stmt.setDouble(4, u.getBalance());
+			stmt.setLong(5, u.getId());
+			stmt.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			StreamCloser.close(stmt);
+			StreamCloser.close(conn);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean updateAdmin(User u) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		
+		final String query = "UPDATE jg_bank.accounts SET username=?, _password=?, full_name=?, balance=TRUNC(CAST(? AS NUMERIC), 2), admin_status=TRUE WHERE id = ?;";
 		
 		try {
 			conn = ConnectionUtil.getConnection();

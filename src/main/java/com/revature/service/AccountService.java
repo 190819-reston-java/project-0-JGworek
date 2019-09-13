@@ -1,5 +1,7 @@
 package com.revature.service;
 
+import java.util.List;
+
 import com.revature.exception.NegativeBalanceException;
 import com.revature.exception.NegativeDepositException;
 import com.revature.model.User;
@@ -37,7 +39,6 @@ public class AccountService {
 	public static double viewBalance(String username) {
 		User thisUser = userDAO.getUserWithU(username);
 		return thisUser.getBalance();
-		
 	}
 
 	public static void withdraw(double d, String username) {
@@ -60,7 +61,49 @@ public class AccountService {
 		userDAO.updateUser(thisUser);
 		
 	}
+
+	public static boolean checkAdmin(String username) {
+		usernameUser = userDAO.getUserWithU(username);
+		if (usernameUser.isAdminStatus() == true) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
+	public static void withdrawAdmin(double d, String username) {
+		User thisUser = userDAO.getUserWithU(username);
+		double finalBalance = (thisUser.getBalance() - d);
+		if (finalBalance < 0) {
+			throw new NegativeBalanceException();
+		}
+		thisUser.setBalance(finalBalance);
+		userDAO.updateAdmin(thisUser);
+	}
+
+	public static void depositAdmin(double d, String username) {
+		if (d < 0) {
+			throw new NegativeDepositException();
+		}
+		User thisUser = userDAO.getUserWithU(username);
+		double finalBalance = (thisUser.getBalance() + d);
+		thisUser.setBalance(finalBalance);
+		userDAO.updateAdmin(thisUser);
+		
+	}
+
+	public static List<User> makeListOfAccounts() {
+		return userDAO.getAllUsers();
+		
+	}
+
+	public static User createNewAccount(String newUsername, String newPassword, String newFullName, double doubleBalanceNumber, boolean newType) {
+		User newAccount = new User(0L, newUsername, newPassword, newFullName , doubleBalanceNumber, newType);
+		userDAO.createUser(newAccount);
+		return userDAO.getUserWithU(newUsername);
+		
+	}
+
 	
 	
 	

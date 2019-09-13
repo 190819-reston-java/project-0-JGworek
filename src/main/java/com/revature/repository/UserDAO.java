@@ -17,5 +17,7 @@ public interface UserDAO {
 	
 	boolean updateUser(User u);
 	
+	boolean updateAdmin(User u);
+	
 	
 }
