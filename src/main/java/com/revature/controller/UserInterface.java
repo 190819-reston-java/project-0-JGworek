@@ -220,7 +220,7 @@ public class UserInterface {
 			adminMenu();
 			break;
 		case "4":
-			logger.trace("Admin: " + AccountService.getFullName(username) + " recieved a list of all users in the database");
+			logger.info("Admin: " + AccountService.getFullName(username) + " recieved a list of all users in the database");
 			System.out.println();
 			System.out.println("All JG Bank Accounts:");
 			System.out.println(AccountService.makeListOfAccounts());
