@@ -220,6 +220,7 @@ public class UserInterface {
 			adminMenu();
 			break;
 		case "4":
+			logger.trace("Admin: " + AccountService.getFullName(username) + " recieved a list of all users in the database");
 			System.out.println();
 			System.out.println("All JG Bank Accounts:");
 			System.out.println(AccountService.makeListOfAccounts());
@@ -251,7 +252,7 @@ public class UserInterface {
 			} catch (NegativeBalanceException e) {
 				System.out.println();
 				System.out.println("Transaction failed!");
-				logger.warn("Admin: " + AccountService.getFullName(username) + " attempted to set balance to a negative amount");
+				logger.info("Admin: " + AccountService.getFullName(username) + " attempted to set balance to a negative amount");
 			}
 			System.out.println("User or Admin?");
 			String typeInput = userInput.nextLine();
@@ -260,9 +261,9 @@ public class UserInterface {
 				newType = true;
 			}
 			System.out.println("New Account:");
-			System.out.println(AccountService.createNewAccount(newUsername, newPassword, newFullName,
-					doubleBalanceNumber, newType));
-			logger.info("Admin: " + AccountService.getFullName(username) + " has successfully created a new account with username: " + newUsername);
+			System.out.println(AccountService.createNewAccount(newUsername, newPassword, newFullName, doubleBalanceNumber, newType));
+			System.out.println();
+			logger.trace("Admin: " + AccountService.getFullName(username) + " has successfully created a new account with username: " + newUsername);
 			System.out.println();
 			adminMenu();
 			break;

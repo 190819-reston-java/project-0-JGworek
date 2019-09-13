@@ -104,8 +104,7 @@ public class AccountService {
 
 	}
 
-	public static User createNewAccount(String newUsername, String newPassword, String newFullName,
-			double doubleBalanceNumber, boolean newType) {
+	public static User createNewAccount(String newUsername, String newPassword, String newFullName, double doubleBalanceNumber, boolean newType) {
 		User newAccount = new User(0L, newUsername, newPassword, newFullName, doubleBalanceNumber, newType);
 		userDAO.createUser(newAccount);
 		return userDAO.getUserWithU(newUsername);
