@@ -263,7 +263,7 @@ public class UserInterface {
 			System.out.println("New Account:");
 			System.out.println(AccountService.createNewAccount(newUsername, newPassword, newFullName, doubleBalanceNumber, newType));
 			System.out.println();
-			logger.trace("Admin: " + AccountService.getFullName(username) + " has successfully created a new account with username: " + newUsername);
+			logger.info("Admin: " + AccountService.getFullName(username) + " has successfully created a new account with username: " + newUsername);
 			System.out.println();
 			adminMenu();
 			break;
