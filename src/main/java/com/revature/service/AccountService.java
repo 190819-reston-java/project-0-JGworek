@@ -2,6 +2,7 @@ package com.revature.service;
 
 import java.util.List;
 
+import com.revature.exception.DuplicateUsernameException;
 import com.revature.exception.NegativeBalanceException;
 import com.revature.exception.NegativeDepositException;
 import com.revature.exception.NegativeWithdrawException;
@@ -116,6 +117,16 @@ public class AccountService {
 			throw new NegativeBalanceException();
 		}
 
+	}
+
+	public static void checkDuplicateUsername(String newUsername) {
+		usernameUser = userDAO.getUserWithU(newUsername);
+		if (usernameUser == null) {
+			
+		} else {
+			throw new DuplicateUsernameException();
+		}
+		
 	}
 
 }

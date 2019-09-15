@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
+import com.revature.exception.DuplicateUsernameException;
 import com.revature.exception.NegativeBalanceException;
 import com.revature.exception.NegativeDepositException;
 import com.revature.exception.NegativeWithdrawException;
@@ -233,6 +234,14 @@ public class UserInterface {
 			System.out.println("Welcome to the 'Create A User' Suite");
 			System.out.println("New Username:");
 			String newUsername = userInput.nextLine();
+			try {AccountService.checkDuplicateUsername(newUsername);
+			} catch (DuplicateUsernameException e) {
+				System.out.println();
+				System.out.println("Username already exists!");
+				logger.warn("Admin : " + AccountService.getFullName(username) + " attempted to create a new account with a Username already in the database");
+				System.out.println();
+				adminMenu();
+			}
 			System.out.println("New Password");
 			String newPassword = userInput.nextLine();
 			System.out.println("Full Name:");
@@ -277,7 +286,5 @@ public class UserInterface {
 			System.out.println();
 			adminMenu();
 		}
-
 	}
-
 }
