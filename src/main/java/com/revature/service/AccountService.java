@@ -15,6 +15,10 @@ public class AccountService {
 	private static User usernameUser = null;
 	private static UserDAO userDAO = new UserDAOImpPJDBC();
 
+	public AccountService(UserDAO userDAOTwo) {
+		this.userDAO = userDAOTwo;
+	}
+
 	public static boolean checkUsername(String username) {
 		usernameUser = userDAO.getUserWithU(username);
 		if (usernameUser == null) {
@@ -105,7 +109,8 @@ public class AccountService {
 
 	}
 
-	public static User createNewAccount(String newUsername, String newPassword, String newFullName, double doubleBalanceNumber, boolean newType) {
+	public static User createNewAccount(String newUsername, String newPassword, String newFullName,
+			double doubleBalanceNumber, boolean newType) {
 		User newAccount = new User(0L, newUsername, newPassword, newFullName, doubleBalanceNumber, newType);
 		userDAO.createUser(newAccount);
 		return userDAO.getUserWithU(newUsername);
@@ -122,11 +127,11 @@ public class AccountService {
 	public static void checkDuplicateUsername(String newUsername) {
 		usernameUser = userDAO.getUserWithU(newUsername);
 		if (usernameUser == null) {
-			
+
 		} else {
 			throw new DuplicateUsernameException();
 		}
-		
+
 	}
 
 }

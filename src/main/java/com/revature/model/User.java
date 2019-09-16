@@ -9,13 +9,14 @@ public class User {
 	private double balance;
 	private boolean adminStatus;
 	private String adminStatusString;
-	
+
 	public String getAdminStatusString() {
-	if(adminStatus == true) {
-		adminStatusString = "Admin";
-	} else {
-		adminStatusString = "User";
-	} return adminStatusString;
+		if (adminStatus == true) {
+			adminStatusString = "Admin";
+		} else {
+			adminStatusString = "User";
+		}
+		return adminStatusString;
 	};
 
 	public long getId() {
@@ -57,7 +58,7 @@ public class User {
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
-	
+
 	public boolean isAdminStatus() {
 		return adminStatus;
 	}
@@ -78,9 +79,8 @@ public class User {
 
 	@Override
 	public String toString() {
-		return  "\n" + "ID: " + id + ", Username: " + username + ", Password: " + password + ", Name: " + fullName
+		return "\n" + "ID: " + id + ", Username: " + username + ", Password: " + password + ", Name: " + fullName
 				+ ", Balance: " + balance + ", Type: " + getAdminStatusString();
 	}
 
-	
 }
